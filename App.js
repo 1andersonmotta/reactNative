@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     elevation: 5, // Esta propriedade é necessária para sombra funcionar no Android
   },
   img: {
-    width: 200,
-    height: 190,
+    width: 290,
+    height: 290,
     marginBottom: 15,
   },
 });
