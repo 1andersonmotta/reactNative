@@ -1,13 +1,17 @@
 import { View, Input, Text, TextInput, ImageBackground, StyleSheet } from "react-native";
 import { useState } from "react";
+import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
 
 function Register() {
-
-    const [name, setName] = useState("")
+    const [fontLoaded] = useFonts({ Roboto_400Regular });
+    if (!fontLoaded) {
+        return null;
+    }
+    // const [name, setName] = useState("")
     return (
         <View >
 
-            <Text style={styles.text}>Olá {setName}</Text>
+            <Text style={styles.text}>Olá </Text>
             {/* <TextInput style={styles.input} placeholder="Email ou Usuario" onChangeText={setName()} /> */}
 
 
