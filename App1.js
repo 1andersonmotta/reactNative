@@ -68,30 +68,34 @@ export default function Home() {
   }, []);
 
   const fetchUsers = () => {
-    setLoading(true); // Inicia o carregamento
+    setLoading(true);
     User.all()
-      .then(users => {
-        setUsers(users);
-        setLoading(false); // Finaliza o carregamento
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false); // Finaliza o carregamento em caso de erro
-      });
-  };
+        .then(users => {
+            console.log('Fetched users:', users); // Log to check the fetched users
+            const sortedUsers = users.sort((a, b) => a.service.localeCompare(b.service)); // Ordenar por serviço
+            setUsers(sortedUsers);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.log(err);
+            setLoading(false);
+        });
+};
 
-  useEffect(() => {
-    User.all()
-      .then(users => setUsers(users))
-      .catch(err => console.log(err));
-  }, []);
 
-  //forced error catch
-  User.find(-1)
-    .then(user => printUser(user))
-    .catch(err => console.log(err))
 
-  //create
+  // useEffect(() => {
+  //   User.all()
+  //     .then(users => setUsers(users))
+  //     .catch(err => console.log(err));
+  // }, []);
+
+  // //forced error catch
+  // User.find(-1)
+  //   .then(user => printUser(user))
+  //   .catch(err => console.log(err))
+
+  // //create
   // User.create({ name: 'anderson Motta', password: '123', service: 'dj, som e Luz', phone: '15997897412' })
   //   .then(id => console.log('User created with id: ' + id))
   //   .catch(err => console.log(err))
@@ -104,45 +108,45 @@ export default function Home() {
   //   .then(id => console.log('User created with id: ' + id))
   //   .catch(err => console.log(err))
 
-  //find id=1
-  User.find(1)
-    .then(user => printUser(user))
-    .catch(err => console.log(err))
+  // //find id=1
+  // User.find(1)
+  //   .then(user => printUser(user))
+  //   .catch(err => console.log(err))
 
-  //find name=vw
-  User.findByname('Batman')
-    .then(users => console.log(users))
-    .catch(err => console.log(err))
+  // //find name=vw
+  // User.findByname('Batman')
+  //   .then(users => console.log(users))
+  //   .catch(err => console.log(err))
 
-  //update
-  User.update(4, { name: 'DeadPoll', password: '123', service: 'animador de festas', phone: 70 })
-    .then(updated => console.log('Users updated: ' + updated))
-    .catch(err => console.log(err))
+  // //update
+  // User.update(4, { name: 'DeadPoll', password: '123', service: 'animador de festas', phone: 70 })
+  //   .then(updated => console.log('Users updated: ' + updated))
+  //   .catch(err => console.log(err))
 
-  //all
-  User.all()
-    .then(
-      users => users.forEach(c => printUser(c))
-    )
+  // //all
+  // User.all()
+  //   .then(
+  //     users => users.forEach(c => printUser(c))
+  //   )
 
-  //delete
-  User.remove(1)
-    .then(updated => console.log('Users removed: ' + updated))
-    .catch(err => console.log(err))
+  // //delete
+  // User.remove(1)
+  //   .then(updated => console.log('Users removed: ' + updated))
+  //   .catch(err => console.log(err))
 
-  User.remove(2)
-    .then(updated => console.log('Users removed: ' + updated))
-    .catch(err => console.log(err))
+  // User.remove(2)
+  //   .then(updated => console.log('Users removed: ' + updated))
+  //   .catch(err => console.log(err))
 
-  User.remove(3)
-    .then(updated => console.log('Users removed: ' + updated))
-    .catch(err => console.log(err))
+  // User.remove(3)
+  //   .then(updated => console.log('Users removed: ' + updated))
+  //   .catch(err => console.log(err))
 
-  //forced empty array (all=[])
-  User.all()
-    .then(
-      users => console.log(users)
-    )
+  // //forced empty array (all=[])
+  // User.all()
+  //   .then(
+  //     users => console.log(users)
+  //   )
 
   ///////
   const [button, setButton] = useState('Test');
@@ -166,15 +170,10 @@ export default function Home() {
 
 
   return (
-
-
-
     <View style={styles.container}>
       <StatusBar style="auto" />
 
-
-
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -214,7 +213,7 @@ export default function Home() {
             <Button title="Salvar" onPress={handleSave} />
           </View>
         </View>
-      </Modal>
+      </Modal> */}
 
       {/* <Register /> */}
       {/* <ScrollView contentContainerStyle={styles.scrollViewContent}> */}
@@ -225,7 +224,20 @@ export default function Home() {
             style={styles.img}
           />
         </View>
-        <TouchableOpacity style={styles.button} onPress={() => setButtonValue("Serviços")}>
+        <Text style={styles.heading}>AVISOS</Text>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("./src/assets/alertdengue.png")}
+            style={styles.imgDengue}
+          />
+        </View>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require("./src/assets/alertzap.png")}
+            style={styles.imgZap}
+          />
+        </View>
+        {/* <TouchableOpacity style={styles.button} onPress={() => setButtonValue("Serviços")}>
           <Text style={styles.buttonText}>Serviços</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => setButtonValue("Produtos")}>
@@ -244,10 +256,10 @@ export default function Home() {
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => setButtonValue("Serviços e Produtos Próximos")}>
           <Text style={styles.buttonText}>Serviços e Produtos Próximos</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
 
-        {/* <Text style={styles.heading}>Serviços:</Text>
+        <Text style={styles.heading}>SERVIÇOS</Text>
           <FlatList
             ref={flatListRef}
             data={users}
@@ -255,7 +267,7 @@ export default function Home() {
             keyExtractor={item => item.id.toString()}
             refreshing={loading} // Adicione esta linha para mostrar o indicador de carregamento
             onRefresh={fetchUsers} // Adicione esta linha para recarregar a lista 
-          /> */}
+          />
       </ScrollView>
     </View>
 
@@ -267,25 +279,29 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#AED581',
+    backgroundColor: "#4CAF50",
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10,
-    marginTop: 30
+    marginTop: 30,
+  },
+  scrollViewContent:{
+    width:350,
   },
   heading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginTop: 33,
-    alignItems: 'center',
-    justifyContent: 'center',
+    color: "#FFFFFF",
+        fontSize: 33,
+        letterSpacing: 1,
+        textAlign: "left",
+        paddingHorizontal: 10,
+        textShadowColor: "#000",
+        textShadowOffset: { width: 0, height: 2 },
+        textShadowRadius: 3,
   },
   item: {
     backgroundColor: '#FFFFFF',
     padding: 20,
     marginVertical: 8,
-    // marginHorizontal: 16,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -298,7 +314,6 @@ const styles = StyleSheet.create({
     fontSize: 21,
   },
   addButton: {
-    backgroundColor: "#4CAF50",
     width: "100%",
     height: 72,
     alignItems: "center",
@@ -349,7 +364,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "#4CAF50", // Cor verde vibrante para os botões
     width: "100%",
     height: 72,
     alignItems: "center",
@@ -386,6 +400,18 @@ const styles = StyleSheet.create({
     marginBottom: 35,
     marginTop: 15,
 
+  },
+  imgDengue: {
+    width: "auto",
+    height: 370,
+    marginBottom: 35,
+    marginTop: 15,
+  },
+  imgZap: {
+    width: "auto",
+    height: 370,
+    marginBottom: 35,
+    marginTop: 15,
   },
 
 });
