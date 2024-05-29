@@ -10,7 +10,7 @@ db.transaction((tx) => {
     //<<<<<<<<<<<<<<<<<<<<<<<< USE ISSO APENAS DURANTE OS TESTES!!! >>>>>>>>>>>>>>>>>>>>>>>
 
     tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT, service TEXT, phone TEXT);"
+        "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, CPF TEXT, password TEXT, service TEXT, phone TEXT);"
     );
 });
 
@@ -29,6 +29,7 @@ const create = (obj) => {
     // Função para padronizar a formatação dos campos
     const formattedObj = {
         name: capitalizeFirstLetter(obj.name),
+        CPF: obj.CPF,
         password: obj.password.toLowerCase(), // Convertendo para minúsculas
         service: obj.service.toUpperCase(), // Convertendo para maiúsculas
         phone: obj.phone // Mantendo o telefone sem formatação
@@ -38,8 +39,8 @@ const create = (obj) => {
         db.transaction((tx) => {
             //comando SQL modificável
             tx.executeSql(
-                "INSERT INTO users (name, password, service, phone) values (?, ?, ?, ?);",
-                [formattedObj.name, formattedObj.password, formattedObj.service, formattedObj.phone],
+                "INSERT INTO users (name, CPF, password, service, phone) values (?, ?, ?, ?, ?);",
+                [formattedObj.name, formattedObj.CPF, formattedObj.password, formattedObj.service, formattedObj.phone],
                 //-----------------------
                 (_, { rowsAffected, insertId }) => {
                     if (rowsAffected > 0) resolve(insertId);
@@ -61,6 +62,7 @@ const create = (obj) => {
 const update = (id, obj) => {
     const formattedObj = {
         name: capitalizeFirstLetter(obj.name),
+        CPF: obj.CPF,
         password: obj.password.toLowerCase(), // Convertendo para minúsculas
         service: obj.service.toUpperCase(), // Convertendo para maiúsculas
         phone: obj.phone // Mantendo o telefone sem formatação
@@ -70,8 +72,8 @@ const update = (id, obj) => {
         db.transaction((tx) => {
             //comando SQL modificável
             tx.executeSql(
-                "UPDATE users SET name=?, password=?, service=?, phone=? WHERE id=?;",
-                [formattedObj.name, formattedObj.password, formattedObj.service, formattedObj.phone, id],
+                "UPDATE users SET name=?, CPF=?, password=?, service=?, phone=? WHERE id=?;",
+                [formattedObj.name, formattedObj.CPF, formattedObj.password, formattedObj.service, formattedObj.phone, id],
                 //-----------------------
                 (_, { rowsAffected }) => {
                     if (rowsAffected > 0) resolve(rowsAffected);

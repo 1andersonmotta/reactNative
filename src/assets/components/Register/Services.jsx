@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, FlatList, ActivityIndicator, TextInput } from 'react-native';
 import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
 import User from '../../services/sqlite/User.js';
+import { useFocusEffect } from '@react-navigation/native';
 
 function Services() {
     const [users, setUsers] = useState([]);
@@ -26,9 +27,11 @@ function Services() {
             });
     };
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchUsers();
+        }, [])
+    );
 
     const filterUsers = (text) => {
         setSearchText(text);

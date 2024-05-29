@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput, Button, 
 import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
 import { TextInputMask } from 'react-native-masked-text';
 import User from '../../services/sqlite/User.js';
+import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 
 function Register() {
     const [users, setUsers] = useState([]);
@@ -11,14 +12,20 @@ function Register() {
     const [password, setPassword] = useState('');
     const [service, setService] = useState('');
     const [phone, setPhone] = useState('');
+    const [cpf, setCpf] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const flatListRef = useRef(null);
 
     const handleSave = () => {
-        if (!name || !password || !service || !phone) {
+        if (!name || !password || !service || !phone || !cpf) {
             setError('Todos os campos são obrigatórios');
+            return;
+        }
+
+        if (!cpfValidator.isValid(cpf)) {
+            setError('CPF inválido');
             return;
         }
 
@@ -26,7 +33,8 @@ function Register() {
             name: name,
             password: password,
             service: service,
-            phone: phone
+            phone: phone,
+            cpf: cpf
         };
 
         User.create(newUser)
@@ -59,7 +67,7 @@ function Register() {
     }, []);
 
     return (
-        <View >
+        <View>
             <TouchableOpacity style={styles.addButton} onPress={() => setModalVisible(true)}>
                 <Text style={styles.addButtonText}>Cadastrar Serviço</Text>
             </TouchableOpacity>
@@ -89,7 +97,7 @@ function Register() {
                         />
                         <TextInput
                             style={styles.input}
-                            placeholder="Senha"
+                            placeholder="Crie uma Senha"
                             secureTextEntry={true}
                             value={password}
                             onChangeText={text => setPassword(text)}
@@ -105,6 +113,13 @@ function Register() {
                             placeholder="Contato"
                             value={phone}
                             onChangeText={text => setPhone(text)}
+                        />
+                        <TextInputMask
+                            style={styles.input}
+                            type={'cpf'}
+                            placeholder="CPF"
+                            value={cpf}
+                            onChangeText={text => setCpf(text)}
                         />
                         <View style={styles.modalbtn}>
                             <Button color={"#4CAF50"} title="Salvar" onPress={handleSave} />

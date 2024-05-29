@@ -2,20 +2,20 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Feather } from '@expo/vector-icons';
 import Register from './src/assets/components/Register/Register.jsx';
 import Services from './src/assets/components/Register/Services.jsx';
-import Home from './App1.js';
-import { Feather } from '@expo/vector-icons';
+import Home from './src/assets/components/Register/Home.jsx';
 
 function HomeScreen() {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#4CAF50"}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: "#4CAF50" }}>
             <Home />
         </View>
     );
 }
 
-function SettingsScreen() {
+function ServicesScreen() {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Services />
@@ -47,7 +47,7 @@ export default function App() {
                 />
                 <Tab.Screen
                     name="Serviços"
-                    component={SettingsScreen}
+                    component={ServicesScreen}
                     options={{
                         tabBarIcon: ({ color, size }) => <Feather name='tool' color={color} size={size} />,
                         tabBarLabel: 'Serviços',
